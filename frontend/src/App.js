@@ -5,6 +5,7 @@ import ContactList from './ContactList';
 import ContactForm from './ContactForm';
 function App() {
   const [contacts, setContacts] = useState([])
+  const [addContact, setAddContact] = useState(false)
   useEffect(() => {
     getContacts()
   },[])
@@ -16,11 +17,19 @@ function App() {
   }
   const onUpdate = () => {
     getContacts()
+    setAddContact(false)
+  }
+  const displayForm = () => {
+    if(addContact){
+      setAddContact(false)
+    }else{
+      setAddContact(true)
+    }
   }
   return (
     <div>
       <ContactList contacts={contacts} updateCallback={onUpdate}/>
-      <ContactForm  updateCallback={onUpdate}/>
+      {!addContact ? (<button onClick={displayForm}>Add Contact</button>) : ( <ContactForm  updateCallback={onUpdate}/>)}
     </div>
   );
 }
