@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+// import "./ContactForm.css"
 const ContactForm = ({updateCallback,currentContact,isUpdate}) => {
     // console.log(isUpdate)
     const [firstName,setFirstName] = useState(currentContact.firstName || "")
@@ -31,18 +32,18 @@ const ContactForm = ({updateCallback,currentContact,isUpdate}) => {
         }       
     }
     return (
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} className="contact-form">
             <div>
-                <label htmlFor="firstName">First Name:</label>
-                <input type="text" id="firstName" value={firstName} onChange={(e)=>setFirstName(e.target.value)}/>
+                <label htmlFor="firstName">First Name: </label>
+                <input type="text" id="firstName" value={firstName} placeholder="Enter your First Name" onChange={(e)=>setFirstName(e.target.value)}/>
             </div>
             <div>
-                <label htmlFor="lastName">Last Name:</label>
-                <input type="text" id="lastName" value={lastName} onChange={(e)=>setLastName(e.target.value)}/>
+                <label htmlFor="lastName">Last Name: </label>
+                <input type="text" id="lastName" value={lastName} placeholder="Enter your Last Name" onChange={(e)=>setLastName(e.target.value)}/>
             </div>
             <div>
-                <label htmlFor="email">Email</label>
-                <input type="text" id="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                <label htmlFor="email">Email: </label>
+                <input type="text" id="email" value={email} placeholder="Enter your email" onChange={(e) => setEmail(e.target.value)}/>
             </div>
             {isUpdate ? (<button type="submit">Update Contact</button>):(<button type="submit">Create Button</button>)}
         </form>

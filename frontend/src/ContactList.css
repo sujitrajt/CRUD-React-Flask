@@ -1,0 +1,18 @@
+.contact-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .contact-list li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .contact-list li:last-child {
+    border-bottom: none;
+  }
+  .color{
+    text-align: center;
+    color: rgb(37, 37, 164);
+  }

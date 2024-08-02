@@ -1,5 +1,5 @@
 import React from "react";
-
+import "./ContactList.css"
 const ContactList = ({contacts,updateCallback,updateContact}) => {
     const onDelete = async(id) => {
         try{
@@ -20,8 +20,8 @@ const ContactList = ({contacts,updateCallback,updateContact}) => {
         updateContact(contact)
     }
     return(
-        <div>
-            <h2>Contacts</h2>
+        <div className="contact-list">
+            <h2 className="color">Contacts</h2>
             <table>
                 <thead>
                     <tr>
