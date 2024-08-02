@@ -6,6 +6,8 @@ import ContactForm from './ContactForm';
 function App() {
   const [contacts, setContacts] = useState([])
   const [addContact, setAddContact] = useState(false)
+  const [updateContact,setUpdateContact] = useState(false)
+  const [currentContact,setCurrentContact] = useState({})
   useEffect(() => {
     getContacts()
   },[])
@@ -18,6 +20,7 @@ function App() {
   const onUpdate = () => {
     getContacts()
     setAddContact(false)
+    setUpdateContact(false)
   }
   const displayForm = () => {
     if(addContact){
@@ -26,10 +29,16 @@ function App() {
       setAddContact(true)
     }
   }
+  const onContactUpdate = (contact) => {
+    // console.log(contact)
+    setUpdateContact(true)
+    setCurrentContact(contact)
+  }
   return (
     <div>
-      <ContactList contacts={contacts} updateCallback={onUpdate}/>
-      {!addContact ? (<button onClick={displayForm}>Add Contact</button>) : ( <ContactForm  updateCallback={onUpdate}/>)}
+      <ContactList contacts={contacts} updateCallback={onUpdate} updateContact={onContactUpdate}/>
+      {!addContact && !updateContact ? (<button onClick={displayForm}>Add Contact</button>) : ( <ContactForm currentContact={currentContact} updateCallback={onUpdate} isUpdate={updateContact}/>)}
+      {/* {updateContact  ?(<ContactForm updateCallback={onUpdate} currentContact={currentContact} isUpdate={updateContact}/>):<></>} */}
     </div>
   );
 }

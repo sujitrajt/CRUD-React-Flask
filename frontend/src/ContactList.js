@@ -1,6 +1,6 @@
 import React from "react";
 
-const ContactList = ({contacts,updateCallback}) => {
+const ContactList = ({contacts,updateCallback,updateContact}) => {
     const onDelete = async(id) => {
         try{
             const options = {
@@ -15,6 +15,9 @@ const ContactList = ({contacts,updateCallback}) => {
         } catch(error) {
             console.log(error)
         }
+    }
+    const onUpdate = (contact) => {
+        updateContact(contact)
     }
     return(
         <div>
@@ -35,7 +38,7 @@ const ContactList = ({contacts,updateCallback}) => {
                             <td>{contact.lastName}</td>
                             <td>{contact.email}</td>
                             <td>
-                                <button>Update</button>
+                                <button onClick={() => onUpdate(contact)}>Update</button>
                                 <button onClick={() => onDelete(contact.id)}>Delete</button>
                             </td>
                         </tr>
