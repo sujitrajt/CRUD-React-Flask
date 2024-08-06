@@ -1,6 +1,13 @@
-from flask import request, jsonify
+from flask import request, jsonify, Flask , send_file
+import os
 from config import app, db
 from models import Contact
+from models import Image
+from werkzeug.utils import secure_filename
+from io import BytesIO
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/contacts',methods = ['GET'])
 def get_contacts():
@@ -54,6 +61,37 @@ def update_contact(user_id):
 
     return jsonify({"message": "Usr updated."}), 200
 
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    print(request.files)
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+    
+    file = request.files['file']
+    print(file)
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file_data = file.read()
+
+        # Save the image data to the database
+        new_image = Image(name=filename, data=file_data)
+        db.session.add(new_image)
+        db.session.commit()
+
+        return jsonify({'message': 'File uploaded successfully', 'id': new_image.id}), 201
+
+    return jsonify({'error': 'Invalid file type'}), 400
+
+@app.route('/uploads/<int:image_id>', methods=['GET'])
+def get_file(image_id):
+    image = Image.query.get(image_id)
+    if not image:
+        return jsonify({'error': 'Image not found'}), 404
+
+    return send_file(BytesIO(image.data), mimetype='image/jpeg', as_attachment=False, download_name=image.name)
 
 if __name__ == '__main__':
     with app.app_context():
