@@ -1,6 +1,7 @@
 import React from "react";
 import "./ContactList.css"
-const ContactList = ({contacts,updateCallback,updateContact}) => {
+import ContactForm from './ContactForm';
+const ContactList = ({contacts,updateCallback,updateContact,addContact}) => {
     const onDelete = async(id) => {
         try{
             const options = {
@@ -18,6 +19,9 @@ const ContactList = ({contacts,updateCallback,updateContact}) => {
     }
     const onUpdate = (contact) => {
         updateContact(contact)
+    }
+    const onAdd = () => {
+        addContact()
     }
     return(
         <div className="contact-list">
@@ -45,6 +49,7 @@ const ContactList = ({contacts,updateCallback,updateContact}) => {
                     ))}
                 </tbody>
             </table>
+            <button onClick={onAdd}>ADD</button>
         </div>
     )
 }

@@ -1,11 +1,13 @@
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 // import "./ContactForm.css"
-const ContactForm = ({updateCallback,currentContact,isUpdate}) => {
+const ContactForm = ({updateCallback,currentContact,isUpdate,addContact}) => {
     // console.log(isUpdate)
     const [firstName,setFirstName] = useState(currentContact.firstName || "")
     const [lastName,setLastName] = useState(currentContact.lastName || "")
     const [email,setEmail] = useState(currentContact.email || "")
+    const navigate = useNavigate();
     const onSubmit = async(e) => {
         e.preventDefault()
         const data = {
@@ -28,11 +30,14 @@ const ContactForm = ({updateCallback,currentContact,isUpdate}) => {
             alert(data.message)
         } else {
             updateCallback()
+            navigate("/contacts")
             console.log(response.status)
+
         }       
     }
     return (
-        <form onSubmit={onSubmit} className="contact-form">
+        <>
+        {addContact || isUpdate ? (<form onSubmit={onSubmit} className="contact-form">
             <div>
                 <label htmlFor="firstName">First Name: </label>
                 <input type="text" id="firstName" value={firstName} placeholder="Enter your First Name" onChange={(e)=>setFirstName(e.target.value)}/>
@@ -45,8 +50,9 @@ const ContactForm = ({updateCallback,currentContact,isUpdate}) => {
                 <label htmlFor="email">Email: </label>
                 <input type="text" id="email" value={email} placeholder="Enter your email" onChange={(e) => setEmail(e.target.value)}/>
             </div>
-            {isUpdate ? (<button type="submit">Update Contact</button>):(<button type="submit">Create Button</button>)}
-        </form>
+            {isUpdate ? (<button type="submit">Update Contact</button>):(<button type="submit">ADD Button</button>)}
+        </form>) : <><h1>error</h1></>}
+        </>
     )
 }
 

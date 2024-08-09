@@ -4,11 +4,16 @@ import { useState, useEffect } from 'react';
 import ContactList from './ContactList';
 import ContactForm from './ContactForm';
 import ImageUpload from './ImageUpload'
+import { Route, Router, Routes, Link, useNavigate } from 'react-router-dom';
+import Login from './Login';
+import Register from './Register';
 function App() {
+  const navigate = useNavigate();
   const [contacts, setContacts] = useState([])
   const [addContact, setAddContact] = useState(false)
   const [updateContact,setUpdateContact] = useState(false)
   const [currentContact,setCurrentContact] = useState({})
+  const [isLogin, setIsLogin] = useState(false)
   useEffect(() => {
     getContacts()
   },[])
@@ -24,23 +29,32 @@ function App() {
     setUpdateContact(false)
   }
   const displayForm = () => {
-    if(addContact){
-      setAddContact(false)
-    }else{
-      setAddContact(true)
-    }
+    console.log("add")
+    setAddContact(true)
+    console.log(addContact)
+    navigate("/contactForm")
+
   }
   const onContactUpdate = (contact) => {
     // console.log(contact)
     setUpdateContact(true)
     setCurrentContact(contact)
+    navigate("/contactForm")
   }
   return (
     <div>
-      <ContactList contacts={contacts} updateCallback={onUpdate} updateContact={onContactUpdate}/>
-      {!addContact && !updateContact ? (<button onClick={displayForm}>Add Contact</button>) : ( <ContactForm currentContact={currentContact} updateCallback={onUpdate} isUpdate={updateContact}/>)}
+      <Routes>
+        <Route path='/' element={<Login/>}/>
+        <Route path='/contacts' element ={<ContactList contacts={contacts} addContact={displayForm}  updateCallback={onUpdate} updateContact={onContactUpdate}/>}/>
+        <Route path='/image' element={<ImageUpload/>}/>
+        <Route path='/contactForm' element ={<ContactForm currentContact={currentContact} updateCallback={onUpdate} isUpdate={updateContact} addContact={addContact}/>}/>
+        <Route path='/register' element={<Register/>}/>
+
+      </Routes>
+      {/* <ContactList contacts={contacts} updateCallback={onUpdate} updateContact={onContactUpdate}/> */}
+       {/* {!addContact && !updateContact ? (<button onClick={displayForm}>Add Contact</button>) : ( <ContactForm currentContact={currentContact} updateCallback={onUpdate} isUpdate={updateContact}/>)} */}
       {/* {updateContact  ?(<ContactForm updateCallback={onUpdate} currentContact={currentContact} isUpdate={updateContact}/>):<></>} */}
-      <ImageUpload/>
+
     </div>
   );
 }
